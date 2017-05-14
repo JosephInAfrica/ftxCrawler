@@ -59,19 +59,20 @@ public class HouseCrawler {
 
 	public  void getCity() throws IOException, KeyManagementException, NoSuchAlgorithmException, InterruptedException{
 		
-		String citys =  Downloader.getResponse("http://esf.bd.fang.com/newsecond/esfcities.aspx", "http", "GB2312", "");
+		String citys =  Downloader.getResponse("http://esf.bd.fang.com/newsecond/esfcities.aspx", "http", "GB2312", "", "");
 		Document doc = Jsoup.parse(citys);
 		Elements city = doc.select("div#c02 li a");
 		for(Element ele :city){
 			
 			String cityLink =getForamtUrl(ele.attr("href"));
-			jedis.rpush(cityRedis, cityLink);
+			System.out.println(cityLink);
+			//jedis.rpush(cityRedis, cityLink);
 		}
 	}
 	
 	public void getPage(String ur) throws KeyManagementException, NoSuchAlgorithmException, InterruptedException, IOException{
 		new Downloader();
-		String cityPage = Downloader.getResponse(ur,"http", "GB2312", "");
+		String cityPage = Downloader.getResponse(ur,"http", "GB2312", "","");
 		Document doc = Jsoup.parse(cityPage);
 //		if(!doc.select("#list_D02_10 > div.qxName > a.org.selected").isEmpty()){
 //			log.info("结束");
@@ -100,7 +101,7 @@ public class HouseCrawler {
 				String detailUr =String.format("%s/i3%d/",ur,k);
 				System.out.println(detailUr);
 				ArrayList<Map> list = new ArrayList<Map>();
-				String page =Downloader.getResponse(detailUr ,"http","GB2312","");
+				String page =Downloader.getResponse(detailUr ,"http","GB2312","", "");
 				doc  = Jsoup.parse(page);
 				Elements house = doc.select("div.houseList dd.info.rel.floatr");
 				for(Element ele :house){

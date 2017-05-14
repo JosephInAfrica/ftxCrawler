@@ -1,17 +1,18 @@
 package com.hui.house.crawler;
 
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.InputStream;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Properties;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.config.RequestConfig.Builder;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -22,13 +23,15 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 public class MyHttpClient {
 	public static HttpHost getProxy(String httpType) throws IOException {
-		Document doc = Jsoup.connect("http://139.224.196.60/proxy/" + httpType).get();
+		Properties props = new Properties();
+		InputStream is = RedisUtils.class.getResourceAsStream("/config.properties");
+		props.load(is);
+		Document doc = Jsoup.connect(props.getProperty("proxyUrl")).get();
 		String proxycont = doc.text();
 		System.out.println(proxycont);
 		String[] proxies = proxycont.split(":");
