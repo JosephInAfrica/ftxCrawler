@@ -1,7 +1,0 @@
-com\hui\house\crawler\Downloader.class
-com\hui\house\crawler\HouseCrawler.class
-com\hui\house\crawler\RedisUtils.class
-com\hui\house\crawler\Main.class
-com\hui\house\crawler\TestHouse.class
-com\hui\house\crawler\Downloader$1.class
-com\hui\house\crawler\MongoDBUtils.class
